@@ -668,6 +668,9 @@ public:
     static const char CAPTURE_MODE_HDR[];
     static const char CAPTURE_MODE_PANORAMA[];
     static const char CAPTURE_MODE_ZOE[];
+    static const char CAPTURE_MODE_ZSL[];
+    static const char CAPTURE_MODE_SHOT2SHOT[];
+    static const char CAPTURE_MODE_GROUPPORTRAIT[];
     static const char KEY_CONTI_BURST_STATE[];
     static const char KEY_SUPPORTED_CAPTURE_MODES[];
     static const char KEY_MIN_CONTRAST[];
@@ -807,6 +810,10 @@ public:
 #ifdef QCOM_HARDWARE
     static const char SCENE_DETECT_OFF[];
     static const char SCENE_DETECT_ON[];
+#endif
+#ifdef HTC_CAMERA_HARDWARE
+    static const char PIXEL_FORMAT_LUMA8[];
+    static const char PIXEL_FORMAT_ARGB8888[];
 #endif
     static const char PIXEL_FORMAT_YUV422SP[];
     static const char PIXEL_FORMAT_YUV420SP[]; // NV21

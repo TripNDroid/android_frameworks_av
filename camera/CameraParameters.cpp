@@ -202,6 +202,9 @@ const char CameraParameters::CAPTURE_MODE_CONTI_BURST_ONE_SHOT[] = "contiburst-o
 const char CameraParameters::CAPTURE_MODE_HDR[] = "hdr";
 const char CameraParameters::CAPTURE_MODE_PANORAMA[] = "panorama";
 const char CameraParameters::CAPTURE_MODE_ZOE[] = "zoe";
+const char CameraParameters::CAPTURE_MODE_ZSL[] = "zsl";
+const char CameraParameters::CAPTURE_MODE_SHOT2SHOT[] = "shot2shot";
+const char CameraParameters::CAPTURE_MODE_GROUPPORTRAIT[] = "groupportrait";
 const char CameraParameters::KEY_CONTI_BURST_STATE[] = "contiburst-state";
 const char CameraParameters::KEY_SUPPORTED_CAPTURE_MODES[] = "capture-mode-values";
 const char CameraParameters::KEY_MIN_CONTRAST[] = "contrast-min";
@@ -313,6 +316,10 @@ const char CameraParameters::SCENE_DETECT_ON[] = "on";
 
 
 // Formats for setPreviewFormat and setPictureFormat.
+#ifdef HTC_CAMERA_HARDWARE
+const char CameraParameters::PIXEL_FORMAT_LUMA8[] = "luma8";
+const char CameraParameters::PIXEL_FORMAT_ARGB8888[] = "argb8888";
+#endif
 const char CameraParameters::PIXEL_FORMAT_YUV422SP[] = "yuv422sp";
 const char CameraParameters::PIXEL_FORMAT_YUV420SP[] = "yuv420sp";
 #ifdef QCOM_HARDWARE

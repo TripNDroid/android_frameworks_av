@@ -744,6 +744,8 @@ public:
     static const char EFFECT_WHITEBOARD[];
     static const char EFFECT_BLACKBOARD[];
     static const char EFFECT_AQUA[];
+    static const char EFFECT_NV_EMBOSS[];
+    static const char EFFECT_NV_VIVID[];
 #ifdef QCOM_HARDWARE
     static const char EFFECT_EMBOSS[];
     static const char EFFECT_SKETCH[];
@@ -792,6 +794,7 @@ public:
     static const char SCENE_MODE_SPORTS[];
     static const char SCENE_MODE_PARTY[];
     static const char SCENE_MODE_CANDLELIGHT[];
+    static const char SCENE_MODE_BACKLIGHT_HDR[];
 #ifdef QCOM_HARDWARE
     static const char SCENE_MODE_BACKLIGHT[];
     static const char SCENE_MODE_FLOWERS[];
@@ -888,6 +891,7 @@ public:
     // To stop continuous focus, applications should change the focus mode to
     // other modes.
     static const char FOCUS_MODE_CONTINUOUS_PICTURE[];
+    static const char FOCUS_MODE_SHOT2SHOT[];
 
 #ifdef QCOM_HARDWARE
 #ifdef QCOM_LEGACY_CAM_PARAMS

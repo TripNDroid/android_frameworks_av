@@ -255,6 +255,8 @@ const char CameraParameters::EFFECT_POSTERIZE[] = "posterize";
 const char CameraParameters::EFFECT_WHITEBOARD[] = "whiteboard";
 const char CameraParameters::EFFECT_BLACKBOARD[] = "blackboard";
 const char CameraParameters::EFFECT_AQUA[] = "aqua";
+const char CameraParameters::EFFECT_NV_EMBOSS[] = "nv-emboss";
+const char CameraParameters::EFFECT_NV_VIVID[] = "nv-vivid";
 #ifdef QCOM_HARDWARE
 const char CameraParameters::EFFECT_EMBOSS[] = "emboss";
 const char CameraParameters::EFFECT_SKETCH[] = "sketch";
@@ -306,6 +308,7 @@ const char CameraParameters::SCENE_MODE_FLOWERS[] = "flowers";
 const char CameraParameters::SCENE_MODE_BARCODE[] = "barcode";
 
 const char CameraParameters::SCENE_MODE_HDR[] = "hdr";
+const char CameraParameters::SCENE_MODE_BACKLIGHT_HDR[] = "backlight-hdr";
 #ifdef QCOM_HARDWARE
 const char CameraParameters::SCENE_MODE_AR[] = "AR";
 
@@ -347,6 +350,7 @@ const char CameraParameters::FOCUS_MODE_FIXED[] = "fixed";
 const char CameraParameters::FOCUS_MODE_EDOF[] = "edof";
 const char CameraParameters::FOCUS_MODE_CONTINUOUS_VIDEO[] = "continuous-video";
 const char CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE[] = "continuous-picture";
+const char CameraParameters::FOCUS_MODE_SHOT2SHOT[] = "shot2shot";
 #if defined(QCOM_HARDWARE)
 #ifdef QCOM_LEGACY_CAM_PARAMS
 const char CameraParameters::FOCUS_MODE_CONTINUOUS_CAMERA[] = "continuous-camera";

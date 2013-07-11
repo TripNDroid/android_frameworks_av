@@ -750,6 +750,16 @@ public:
     static const char EFFECT_AQUA[];
     static const char EFFECT_NV_EMBOSS[];
     static const char EFFECT_NV_VIVID[];
+#ifdef SAMSUNG_CAMERA_HARDWARE
+    static const char EFFECT_CARTOONIZE[];
+    static const char EFFECT_POINT_RED_YELLOW[];
+    static const char EFFECT_POINT_GREEN[];
+    static const char EFFECT_POINT_BLUE[];
+    static const char EFFECT_VINTAGE_COLD[];
+    static const char EFFECT_VINTAGE_WARM[];
+    static const char EFFECT_WASHED[];
+#endif
+
 #ifdef QCOM_HARDWARE
     static const char EFFECT_EMBOSS[];
     static const char EFFECT_SKETCH[];

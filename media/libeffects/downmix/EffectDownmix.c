@@ -431,7 +431,6 @@ static int Downmix_Command(effect_handle_t self, uint32_t cmdCode, uint32_t cmdS
         effect_param_t *cmd = (effect_param_t *) pCmdData;
         int32_t cmd_data; memcpy(&cmd_data, cmd->data, sizeof(int32_t));
         *(int *)pReplyData = Downmix_setParameter(pDownmixer, cmd_data /* *(int32_t *)cmd->data*/,
-        *(int *)pReplyData = Downmix_setParameter(pDownmixer, *(int32_t *)cmd->data,
                 cmd->vsize, cmd->data + sizeof(int32_t));
         break;
 

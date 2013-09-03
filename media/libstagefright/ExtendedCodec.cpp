@@ -372,7 +372,8 @@ void ExtendedCodec::enableSmoothStreaming(
 bool ExtendedCodec::checkDPFromCodecSpecificData(const uint8_t *data, size_t size)
 {
     bool retVal = false;
-    size_t offset = 0, start_code_offset = -1;
+    size_t offset = 0, start_code_offset = 0;
+    bool isStartCode = false;
     int VOL_START_CODE = 0x20;
     const char StartCode[]="\x00\x00\x01";
     size_t max_header_size = 28;
@@ -385,12 +386,13 @@ bool ExtendedCodec::checkDPFromCodecSpecificData(const uint8_t *data, size_t siz
            if ((data[offset + 3] & 0xf0) == VOL_START_CODE) {
                 if (!memcmp(&data[offset], StartCode, 3)) {
                     start_code_offset = offset;
+                    isStartCode = true;
                     break;
                  }
             }
             offset++;
     }
-    if (start_code_offset > 0) {
+    if (isStartCode) {
         retVal = checkDPFromVOLHeader((const uint8_t*) &data[start_code_offset],
                                        size);
     }

@@ -64,7 +64,7 @@ LOCAL_SRC_FILES:=                         \
         mp4/FragmentedMP4Parser.cpp       \
         mp4/TrackFragment.cpp             \
         ExtendedExtractor.cpp             \
-        QCUtils.cpp                       \
+        QCUtils.cpp
 
 LOCAL_C_INCLUDES:= \
         $(TOP)/frameworks/av/include/media/stagefright/timedtext \
@@ -138,7 +138,7 @@ LOCAL_SHARED_LIBRARIES := \
         libui \
         libutils \
         libvorbisidec \
-        libz \
+        libz
 
 LOCAL_STATIC_LIBRARIES := \
         libstagefright_color_conversion \
@@ -151,7 +151,7 @@ LOCAL_STATIC_LIBRARIES := \
         libstagefright_mpeg2ts \
         libstagefright_httplive \
         libstagefright_id3 \
-        libFLAC \
+        libFLAC
 
 LOCAL_LDFLAGS :=  \
 	$(LOCAL_PATH)/codecs/dtsdec/libstagefright_dtsdec.a

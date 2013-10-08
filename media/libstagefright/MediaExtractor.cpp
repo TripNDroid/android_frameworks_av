@@ -132,6 +132,8 @@ sp<MediaExtractor> MediaExtractor::Create(
     } else if (!strcasecmp(mime, MEDIA_MIMETYPE_AUDIO_RAW)) {
         ret = new PCMExtractor(source);
 #endif
+    } else if (sPlugin.create) {
+        ret = sPlugin.create(source, mime, meta);
     }
 
     if (ret != NULL) {
@@ -142,7 +144,12 @@ sp<MediaExtractor> MediaExtractor::Create(
        }
     }
 
+#ifdef QCOM_HARDWARE
     return QCUtils::MediaExtractor_CreateIfNeeded(ret, source, mime);
+#else
+    return ret;
+#endif
+
 }
 
 }  // namespace android

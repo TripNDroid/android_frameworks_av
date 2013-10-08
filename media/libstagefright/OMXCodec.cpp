@@ -722,6 +722,11 @@ status_t OMXCodec::configureCodec(const sp<MetaData> &meta) {
                     sampleRate,
                     numChannels);
                 }
+	} else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_WMA, mMIME))  {
+		status_t err = setWMAFormat(meta);
+		if (err!=OK) {
+			return err;
+		}
 	} else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_RA, mMIME))  {
 		status_t err = setRAFormat(meta);
 		if (err!=OK) {

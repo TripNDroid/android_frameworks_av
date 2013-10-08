@@ -159,8 +159,6 @@ status_t ExtendedCodec::setAudioFormat(
         CHECK(meta->findInt32(kKeyChannelCount, &numChannels));
         CHECK(meta->findInt32(kKeySampleRate, &sampleRate));
         setQCELPFormat(numChannels, sampleRate, OMXhandle, nodeID, isEncoder);
-    } else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_WMA, mime))  {
-        err = setWMAFormat(meta, OMXhandle, nodeID, isEncoder);
     }
     return err;
 }
@@ -174,8 +172,6 @@ status_t ExtendedCodec::setVideoInputFormat(
         *compressionFormat= (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
     } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_DIVX311, mime)){
         *compressionFormat= (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
-    } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_WMV, mime)){
-        *compressionFormat = OMX_VIDEO_CodingWMV;
     } else if (!strcasecmp(MEDIA_MIMETYPE_CONTAINER_MPEG2, mime)){
         *compressionFormat = OMX_VIDEO_CodingMPEG2;
     } else {
@@ -194,8 +190,6 @@ status_t ExtendedCodec::setVideoOutputFormat(
         *compressionFormat = (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
     } else if(!strcasecmp(MEDIA_MIMETYPE_VIDEO_DIVX4, mime)) {
         *compressionFormat = (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
-    } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_WMV, mime)){
-        *compressionFormat = OMX_VIDEO_CodingWMV;
     } else {
         retVal = BAD_VALUE;
     }
@@ -645,105 +639,6 @@ void ExtendedCodec::setQCELPFormat(
     else {
         ALOGI("QCELP decoder \n");
     }
-}
-
-status_t ExtendedCodec::setWMAFormat(
-        const sp<MetaData> &meta, sp<IOMX> OMXhandle,
-        IOMX::node_id nodeID, bool isEncoder ) {
-    ALOGV("setWMAFormat Called");
-
-    if (isEncoder) {
-        ALOGE("WMA encoding not supported");
-        return OK;
-    } else {
-        int32_t version;
-        OMX_AUDIO_PARAM_WMATYPE paramWMA;
-        QOMX_AUDIO_PARAM_WMA10PROTYPE paramWMA10;
-        CHECK(meta->findInt32(kKeyWMAVersion, &version));
-        int32_t numChannels;
-        int32_t bitRate;
-        int32_t sampleRate;
-        int32_t encodeOptions;
-        int32_t blockAlign;
-        int32_t bitspersample;
-        int32_t formattag;
-        int32_t advencopt1;
-        int32_t advencopt2;
-        int32_t VirtualPktSize;
-        if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            CHECK(meta->findInt32(kKeyWMABitspersample, &bitspersample));
-            CHECK(meta->findInt32(kKeyWMAFormatTag, &formattag));
-            CHECK(meta->findInt32(kKeyWMAAdvEncOpt1,&advencopt1));
-            CHECK(meta->findInt32(kKeyWMAAdvEncOpt2,&advencopt2));
-            CHECK(meta->findInt32(kKeyWMAVirPktSize,&VirtualPktSize));
-        }
-        if(version==kTypeWMA) {
-            InitOMXParams(&paramWMA);
-            paramWMA.nPortIndex = kPortIndexInput;
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            InitOMXParams(&paramWMA10);
-            paramWMA10.nPortIndex = kPortIndexInput;
-        }
-        CHECK(meta->findInt32(kKeyChannelCount, &numChannels));
-        CHECK(meta->findInt32(kKeySampleRate, &sampleRate));
-        CHECK(meta->findInt32(kKeyBitRate, &bitRate));
-        CHECK(meta->findInt32(kKeyWMAEncodeOpt, &encodeOptions));
-        CHECK(meta->findInt32(kKeyWMABlockAlign, &blockAlign));
-        ALOGV("Channels: %d, SampleRate: %d, BitRate; %d"
-                   "EncodeOptions: %d, blockAlign: %d", numChannels,
-                   sampleRate, bitRate, encodeOptions, blockAlign);
-        if(sampleRate>48000 || numChannels>2)
-        {
-            ALOGE("Unsupported samplerate/channels");
-            return ERROR_UNSUPPORTED;
-        }
-        if(version==kTypeWMAPro || version==kTypeWMALossLess)
-        {
-            ALOGV("Bitspersample: %d, wmaformattag: %d,"
-                       "advencopt1: %d, advencopt2: %d VirtualPktSize %d", bitspersample,
-                       formattag, advencopt1, advencopt2, VirtualPktSize);
-        }
-        status_t err = OK;
-        OMX_INDEXTYPE index;
-        if(version==kTypeWMA) {
-            err = OMXhandle->getParameter(
-                   nodeID, OMX_IndexParamAudioWma, &paramWMA, sizeof(paramWMA));
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            OMXhandle->getExtensionIndex(nodeID,"OMX.Qualcomm.index.audio.wma10Pro",&index);
-            err = OMXhandle->getParameter(
-                   nodeID, index, &paramWMA10, sizeof(paramWMA10));
-        }
-        CHECK_EQ(err, (status_t)OK);
-        if(version==kTypeWMA) {
-            paramWMA.nChannels = numChannels;
-            paramWMA.nSamplingRate = sampleRate;
-            paramWMA.nEncodeOptions = encodeOptions;
-            paramWMA.nBitRate = bitRate;
-            paramWMA.nBlockAlign = blockAlign;
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            paramWMA10.nChannels = numChannels;
-            paramWMA10.nSamplingRate = sampleRate;
-            paramWMA10.nEncodeOptions = encodeOptions;
-            paramWMA10.nBitRate = bitRate;
-            paramWMA10.nBlockAlign = blockAlign;
-        }
-        if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            paramWMA10.advancedEncodeOpt = advencopt1;
-            paramWMA10.advancedEncodeOpt2 = advencopt2;
-            paramWMA10.formatTag = formattag;
-            paramWMA10.validBitsPerSample = bitspersample;
-            paramWMA10.nVirtualPktSize = VirtualPktSize;
-        }
-        if(version==kTypeWMA) {
-            err = OMXhandle->setParameter(
-                  nodeID, OMX_IndexParamAudioWma, &paramWMA, sizeof(paramWMA));
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-           err = OMXhandle->setParameter(
-                 nodeID, index, &paramWMA10, sizeof(paramWMA10));
-        }
-        return err;
-    }
-    return OK;
 }
 
 void ExtendedCodec::setAC3Format(

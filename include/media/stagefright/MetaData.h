@@ -130,6 +130,18 @@ enum {
 
     kKeyIsUnreadable      = 'unre',  // bool (int32_t)
 
+    kKeyRawCodecSpecificData = 'rcsd',  // raw data - added to support mmParser
+    kKeyDivXVersion       = 'DivX',  // int32_t
+    kKeyDivXDrm           = 'QDrm',  // void *
+    kKeyWMAEncodeOpt      = 'eopt',  // int32_t
+    kKeyWMABlockAlign     = 'blka',  // int32_t
+    kKeyWMAVersion        = 'wmav',  // int32_t
+    kKeyWMAAdvEncOpt1     = 'ade1',  // int16_t
+    kKeyWMAAdvEncOpt2     = 'ade2',  // int32_t
+    kKeyWMAFormatTag      = 'fmtt',  // int64_t
+    kKeyWMABitspersample  = 'bsps',  // int64_t
+    kKeyWMAVirPktSize     = 'vpks',  // int64_t
+    kKeyWMVProfile        = 'wmvp',  // int32_t
     kKeyWMVVersion        = 'wmvv',  // int32_t
     kKeyRVVersion         = '#rvv',  // int32_t
     kKeyBlockAlign        = 'blk',   // int32_t , should be different from kKeyWMABlockAlign
@@ -180,6 +192,19 @@ enum {
     kTypeESDS        = 'esds',
     kTypeAVCC        = 'avcc',
     kTypeD263        = 'd263',
+};
+
+enum {
+    kTypeDivXVer_3_11,
+    kTypeDivXVer_4,
+    kTypeDivXVer_5,
+    kTypeDivXVer_6,
+};
+
+enum {
+    kTypeWMA,
+    kTypeWMAPro,
+    kTypeWMALossLess,
 };
 
 enum {

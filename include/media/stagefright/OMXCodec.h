@@ -397,12 +397,15 @@ private:
     bool mNumBFrames;
 
     status_t setWMVFormat(const sp<MetaData> &inputFormat);
-    status_t setRAFormat(const sp<MetaData> &inputFormat);
     status_t setRVFormat(const sp<MetaData> &inputFormat);
+    status_t setFFmpegVideoFormat(const sp<MetaData> &inputFormat);
+    status_t setVORBISFormat(const sp<MetaData> &inputFormat);
+    status_t setRAFormat(const sp<MetaData> &inputFormat);
+    status_t setFLACFormat(const sp<MetaData> &inputFormat);
+    status_t setMP2Format(const sp<MetaData> &inputFormat);
+    status_t setAC3Format(const sp<MetaData> &inputFormat);
     status_t setAPEFormat(const sp<MetaData> &inputFormat);
     status_t setDTSFormat(const sp<MetaData> &inputFormat);
-    status_t setFLACFormat(const sp<MetaData> &inputFormat);
-    status_t setFFmpegVideoFormat(const sp<MetaData> &inputFormat);
     status_t setFFmpegAudioFormat(const sp<MetaData> &inputFormat);
 
     status_t releaseMediaBuffersOn(OMX_U32 portIndex);

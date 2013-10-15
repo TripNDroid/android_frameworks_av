@@ -56,29 +56,6 @@ MediaCodecList::MediaCodecList()
         return;
     }
 
-#if 0
-    //video
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.h264.decoder",   MEDIA_MIMETYPE_VIDEO_AVC   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.h263.decoder",   MEDIA_MIMETYPE_VIDEO_H263  );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.mpeg4.decoder",  MEDIA_MIMETYPE_VIDEO_MPEG4 );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.mpeg2v.decoder", MEDIA_MIMETYPE_VIDEO_MPEG2 );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.vc1.decoder",    MEDIA_MIMETYPE_VIDEO_VC1   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.wmv.decoder",    MEDIA_MIMETYPE_VIDEO_WMV   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.rv.decoder",     MEDIA_MIMETYPE_VIDEO_RV    );
-
-    // audio
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.aac.decoder",    MEDIA_MIMETYPE_AUDIO_AAC   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.mp3.decoder",    MEDIA_MIMETYPE_AUDIO_MPEG  );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.mp1.decoder",    MEDIA_MIMETYPE_AUDIO_MPEG_LAYER_I  );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.mp2.decoder",    MEDIA_MIMETYPE_AUDIO_MPEG_LAYER_II );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.ac3.decoder",    MEDIA_MIMETYPE_AUDIO_AC3   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.wma.decoder",    MEDIA_MIMETYPE_AUDIO_WMA   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.ra.decoder",     MEDIA_MIMETYPE_AUDIO_RA    );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.ape.decoder",    MEDIA_MIMETYPE_AUDIO_APE   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.dts.decoder",    MEDIA_MIMETYPE_AUDIO_DTS   );
-    addMediaCodec(false /* encoder */, "OMX.ffmpeg.flac.decoder",   MEDIA_MIMETYPE_AUDIO_FLAC  );
-#endif
-
     parseXMLFile(file);
 
     if (mInitCheck == OK) {
@@ -90,7 +67,7 @@ MediaCodecList::MediaCodecList()
                 false /* encoder */, "OMX.google.raw.decoder", "audio/raw");
     }
 
-#if 1
+#if 0
     for (size_t i = 0; i < mCodecInfos.size(); ++i) {
         const CodecInfo &info = mCodecInfos.itemAt(i);
 

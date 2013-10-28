@@ -746,6 +746,11 @@ status_t OMXCodec::configureCodec(const sp<MetaData> &meta) {
 		if (err!=OK) {
 			return err;
 		}
+	} else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_MPEG, mMIME))  {
+		status_t err = setMP3Format(meta);
+		if (err!=OK) {
+			return err;
+		}
 	} else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_VORBIS, mMIME))  {
 		status_t err = setVORBISFormat(meta);
 		if (err!=OK) {
@@ -4268,6 +4273,43 @@ status_t OMXCodec::setWMVFormat(const sp<MetaData> &meta)
 
     err = mOMX->setParameter(
                     mNode, OMX_IndexParamVideoWmv, &paramWMV, sizeof(paramWMV));
+    return err;
+}
+
+status_t OMXCodec::setMP3Format(const sp<MetaData> &meta)
+{
+    int32_t numChannels = 0;
+    int32_t sampleRate = 0;
+    OMX_AUDIO_PARAM_MP3TYPE param;
+
+    if (mIsEncoder) {
+        CODEC_LOGE("MP3 encoding not supported");
+        return OK;
+    }
+
+    if (strncmp(mComponentName, "OMX.ffmpeg.mp3.decoder", 22)) {
+        return OK;
+    }
+
+    CHECK(meta->findInt32(kKeyChannelCount, &numChannels));
+    CHECK(meta->findInt32(kKeySampleRate, &sampleRate));
+
+    CODEC_LOGV("Channels: %d, SampleRate: %d",
+            numChannels, sampleRate);
+
+    InitOMXParams(&param);
+    param.nPortIndex = kPortIndexInput;
+
+    status_t err = mOMX->getParameter(
+                       mNode, OMX_IndexParamAudioMp3, &param, sizeof(param));
+    if (err != OK)
+        return err;
+
+    param.nChannels = numChannels;
+    param.nSampleRate = sampleRate;
+
+    err = mOMX->setParameter(
+                    mNode, OMX_IndexParamAudioMp3, &param, sizeof(param));
     return err;
 }
 

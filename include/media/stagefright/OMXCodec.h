@@ -415,6 +415,7 @@ private:
     status_t setRAFormat(const sp<MetaData> &inputFormat);
     status_t setFLACFormat(const sp<MetaData> &inputFormat);
     status_t setMP2Format(const sp<MetaData> &inputFormat);
+    status_t setMP3Format(const sp<MetaData> &inputFormat);
     status_t setAC3Format(const sp<MetaData> &inputFormat);
     status_t setAPEFormat(const sp<MetaData> &inputFormat);
     status_t setDTSFormat(const sp<MetaData> &inputFormat);

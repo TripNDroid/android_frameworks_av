@@ -76,6 +76,8 @@ const char *MEDIA_MIMETYPE_AUDIO_RA = "audio/vnd.rn-realaudio";
 const char *MEDIA_MIMETYPE_AUDIO_WMA = "audio/x-ms-wma";
 const char *MEDIA_MIMETYPE_AUDIO_FFMPEG = "audio/ffmpeg";
 
+const char *MEDIA_MIMETYPE_CONTAINER_ADIF =  "X-AAC-ADIF";
+const char *MEDIA_MIMETYPE_CONTAINER_ADTS =  "X-AAC-ADTS";
 const char *MEDIA_MIMETYPE_CONTAINER_APE = "audio/x-ape";
 const char *MEDIA_MIMETYPE_CONTAINER_ASF = "video/x-ms-asf";
 const char *MEDIA_MIMETYPE_CONTAINER_DIVX = "video/divx";

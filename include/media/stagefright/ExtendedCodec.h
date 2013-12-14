@@ -138,15 +138,13 @@ struct ExtendedCodec {
     static void enableSmoothStreaming(
             const sp<IOMX> &omx, IOMX::node_id nodeID, bool* isEnabled,
             const char* componentName);
+    
+    static void     checkIfInterlaced(const uint8_t *ptr, const sp<MetaData> &meta);
 
     static bool useHWAACDecoder(const char *mime);
 
 private:
     static const char* getMsgKey(int key );
-
-    static status_t setWMAFormat(
-            const sp<MetaData> &meta, sp<IOMX> OMXhandle,
-            IOMX::node_id nodeID, bool isEncoder );
 
     static status_t setWMAFormat(
             const sp<AMessage> &msg, sp<IOMX> OMXhandle,

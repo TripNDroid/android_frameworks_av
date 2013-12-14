@@ -19,6 +19,7 @@
 #include <utils/Log.h>
 
 #include <media/stagefright/MediaCodecList.h>
+#include <media/stagefright/MediaDefs.h>
 
 #include <media/stagefright/foundation/ADebug.h>
 #include <media/stagefright/MediaErrors.h>

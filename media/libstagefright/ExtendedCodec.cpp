@@ -50,6 +50,7 @@
 #include <OMX_Component.h>
 #include <QOMX_AudioExtensions.h>
 #include "include/ExtendedUtils.h"
+#include "include/avc_utils.h"
 
 namespace android {
 enum MetaKeyType{
@@ -314,8 +315,6 @@ status_t ExtendedCodec::setAudioFormat(
         CHECK(msg->findInt32("channel-count", &numChannels));
         CHECK(msg->findInt32("sample-rate", &sampleRate));
         setQCELPFormat(numChannels, sampleRate, OMXhandle, nodeID, isEncoder);
-    } else if (!strcasecmp(MEDIA_MIMETYPE_AUDIO_WMA, mime))  {
-        err = setWMAFormat(msg, OMXhandle, nodeID, isEncoder);
     }
     return err;
 }
@@ -329,8 +328,6 @@ status_t ExtendedCodec::setVideoInputFormat(
         *compressionFormat= (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
     } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_DIVX311, mime)){
         *compressionFormat= (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
-    } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_WMV, mime)){
-        *compressionFormat = OMX_VIDEO_CodingWMV;
     } else if (!strcasecmp(MEDIA_MIMETYPE_CONTAINER_MPEG2, mime)){
         *compressionFormat = OMX_VIDEO_CodingMPEG2;
     } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_HEVC, mime)){
@@ -351,8 +348,6 @@ status_t ExtendedCodec::setVideoOutputFormat(
         *compressionFormat = (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
     } else if(!strcasecmp(MEDIA_MIMETYPE_VIDEO_DIVX4, mime)) {
         *compressionFormat = (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingDivx;
-    } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_WMV, mime)){
-        *compressionFormat = OMX_VIDEO_CodingWMV;
     } else if (!strcasecmp(MEDIA_MIMETYPE_VIDEO_HEVC, mime)){
         *compressionFormat = (OMX_VIDEO_CODINGTYPE)QOMX_VIDEO_CodingHevc;
     } else {
@@ -714,114 +709,6 @@ void ExtendedCodec::setQCELPFormat(
     }
 }
 
-status_t ExtendedCodec::setWMAFormat(
-        const sp<MetaData> &meta, sp<IOMX> OMXhandle,
-        IOMX::node_id nodeID, bool isEncoder ) {
-    sp<AMessage> msg = new AMessage();
-    msg->clear();
-    convertMetaDataToMessage(meta, &msg);
-    return setWMAFormat(msg, OMXhandle, nodeID, isEncoder);
-}
-
-status_t ExtendedCodec::setWMAFormat(
-        const sp<AMessage> &msg, sp<IOMX> OMXhandle,
-        IOMX::node_id nodeID, bool isEncoder ) {
-    ALOGV("setWMAFormat Called");
-
-    if (isEncoder) {
-        ALOGE("WMA encoding not supported");
-        return OK;
-    } else {
-        int32_t version;
-        OMX_AUDIO_PARAM_WMATYPE paramWMA;
-        QOMX_AUDIO_PARAM_WMA10PROTYPE paramWMA10;
-        CHECK(msg->findInt32(getMsgKey(kKeyWMAVersion), &version));
-        int32_t numChannels;
-        int32_t bitRate;
-        int32_t sampleRate;
-        int32_t encodeOptions;
-        int32_t blockAlign;
-        int32_t bitspersample;
-        int32_t formattag;
-        int32_t advencopt1;
-        int32_t advencopt2;
-        int32_t VirtualPktSize;
-        if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            CHECK(msg->findInt32(getMsgKey(kKeyWMABitspersample), &bitspersample));
-            CHECK(msg->findInt32(getMsgKey(kKeyWMAFormatTag), &formattag));
-            CHECK(msg->findInt32(getMsgKey(kKeyWMAAdvEncOpt1), &advencopt1));
-            CHECK(msg->findInt32(getMsgKey(kKeyWMAAdvEncOpt2), &advencopt2));
-            CHECK(msg->findInt32(getMsgKey(kKeyWMAVirPktSize), &VirtualPktSize));
-        }
-        if(version==kTypeWMA) {
-            InitOMXParams(&paramWMA);
-            paramWMA.nPortIndex = kPortIndexInput;
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            InitOMXParams(&paramWMA10);
-            paramWMA10.nPortIndex = kPortIndexInput;
-        }
-        CHECK(msg->findInt32("channel-count", &numChannels));
-        CHECK(msg->findInt32("sample-rate", &sampleRate));
-        CHECK(msg->findInt32(getMsgKey(kKeyBitRate), &bitRate));
-        CHECK(msg->findInt32(getMsgKey(kKeyWMAEncodeOpt), &encodeOptions));
-        CHECK(msg->findInt32(getMsgKey(kKeyWMABlockAlign), &blockAlign));
-        ALOGV("Channels: %d, SampleRate: %d, BitRate; %d"
-                   "EncodeOptions: %d, blockAlign: %d", numChannels,
-                   sampleRate, bitRate, encodeOptions, blockAlign);
-        if(sampleRate>48000 || numChannels>2)
-        {
-            ALOGE("Unsupported samplerate/channels");
-            return ERROR_UNSUPPORTED;
-        }
-        if(version==kTypeWMAPro || version==kTypeWMALossLess)
-        {
-            ALOGV("Bitspersample: %d, wmaformattag: %d,"
-                       "advencopt1: %d, advencopt2: %d VirtualPktSize %d", bitspersample,
-                       formattag, advencopt1, advencopt2, VirtualPktSize);
-        }
-        status_t err = OK;
-        OMX_INDEXTYPE index;
-        if(version==kTypeWMA) {
-            err = OMXhandle->getParameter(
-                   nodeID, OMX_IndexParamAudioWma, &paramWMA, sizeof(paramWMA));
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            OMXhandle->getExtensionIndex(nodeID,"OMX.Qualcomm.index.audio.wma10Pro",&index);
-            err = OMXhandle->getParameter(
-                   nodeID, index, &paramWMA10, sizeof(paramWMA10));
-        }
-        CHECK_EQ(err, (status_t)OK);
-        if(version==kTypeWMA) {
-            paramWMA.nChannels = numChannels;
-            paramWMA.nSamplingRate = sampleRate;
-            paramWMA.nEncodeOptions = encodeOptions;
-            paramWMA.nBitRate = bitRate;
-            paramWMA.nBlockAlign = blockAlign;
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            paramWMA10.nChannels = numChannels;
-            paramWMA10.nSamplingRate = sampleRate;
-            paramWMA10.nEncodeOptions = encodeOptions;
-            paramWMA10.nBitRate = bitRate;
-            paramWMA10.nBlockAlign = blockAlign;
-        }
-        if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-            paramWMA10.advancedEncodeOpt = advencopt1;
-            paramWMA10.advancedEncodeOpt2 = advencopt2;
-            paramWMA10.formatTag = formattag;
-            paramWMA10.validBitsPerSample = bitspersample;
-            paramWMA10.nVirtualPktSize = VirtualPktSize;
-        }
-        if(version==kTypeWMA) {
-            err = OMXhandle->setParameter(
-                  nodeID, OMX_IndexParamAudioWma, &paramWMA, sizeof(paramWMA));
-        } else if(version==kTypeWMAPro || version==kTypeWMALossLess) {
-           err = OMXhandle->setParameter(
-                 nodeID, index, &paramWMA10, sizeof(paramWMA10));
-        }
-        return err;
-    }
-    return OK;
-}
-
 void ExtendedCodec::setAC3Format(
         int32_t numChannels, int32_t sampleRate, sp<IOMX> OMXhandle,
         IOMX::node_id nodeID) {
@@ -1015,17 +902,13 @@ namespace android {
         return OK;
     }
 
-    status_t ExtendedCodec::setWMAFormat(
+     static status_t setWMAFormat(
             const sp<MetaData> &meta, sp<IOMX> OMXhandle,
-            IOMX::node_id nodeID, bool isEncoder) {
-        return OK;
-    }
+            IOMX::node_id nodeID, bool isEncoder );
 
-    status_t ExtendedCodec::setWMAFormat(
-            const sp<AMessage> &msg, sp<IOMX> OMXhandle,
-            IOMX::node_id nodeID, bool isEncoder) {
-        return OK;
-    }
+    static status_t setWMAFormat(
+             const sp<AMessage> &msg, sp<IOMX> OMXhandle,
+             IOMX::node_id nodeID, bool isEncoder );
 
     void ExtendedCodec::setEVRCFormat(
             int32_t numChannels, int32_t sampleRate,

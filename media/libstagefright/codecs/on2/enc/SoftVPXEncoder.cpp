@@ -857,11 +857,10 @@ void SoftVPXEncoder::onQueueFilled(OMX_U32 portIndex) {
 OMX_ERRORTYPE SoftVPXEncoder::getExtensionIndex(
         const char *name, OMX_INDEXTYPE *index) {
     if (!strcmp(name, "OMX.google.android.index.storeMetaDataInBuffers")) {
-        *index = OMX_IndexVendorStartUnused;
+        *(int32_t*)index = OMX_IndexVendorStartUnused;
         return OMX_ErrorNone;
     }
-
-    return SimpleSoftOMXComponent::getExtensionIndex(name, index);
+    return OMX_ErrorUndefined;
 }
 
 }  // namespace android

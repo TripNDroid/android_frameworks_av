@@ -235,7 +235,8 @@ void ExtendedUtils::setBFrames(
         OMX_VIDEO_PARAM_MPEG4TYPE &mpeg4type, int32_t &numBFrames,
         const char* componentName) {
     //ignore non QC components
-    if (strncmp(componentName, "OMX.qcom.", 9)) {
+    if (strncmp(componentName, "OMX.qcom.", 9)
+        || strncmp(componentName, "OMX.ffmpeg.", 9)) {
         return;
     }
     if (mpeg4type.eProfile > OMX_VIDEO_MPEG4ProfileSimple) {
@@ -250,8 +251,9 @@ void ExtendedUtils::setBFrames(
 void ExtendedUtils::setBFrames(
         OMX_VIDEO_PARAM_AVCTYPE &h264type, int32_t &numBFrames,
         int32_t iFramesInterval, int32_t frameRate, const char* componentName) {
-    //ignore non QC components
-    if (strncmp(componentName, "OMX.qcom.", 9)) {
+    //ignore non QC / ffmpeg components
+    if (strncmp(componentName, "OMX.qcom.", 9)
+        || strncmp(componentName, "OMX.ffmpeg.", 9)) {
         return;
     }
     OMX_U32 val = 0;

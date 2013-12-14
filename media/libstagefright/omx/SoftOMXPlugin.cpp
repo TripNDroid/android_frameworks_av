@@ -34,6 +34,31 @@ static const struct {
     const char *mRole;
 
 } kComponents[] = {
+    { "OMX.ffmpeg.mpeg2v.decoder", "ffmpegvdec", "video_decoder.mpeg2v" },
+    { "OMX.ffmpeg.h263.decoder", "ffmpegvdec", "video_decoder.h263" },
+    { "OMX.ffmpeg.mpeg4.decoder", "ffmpegvdec", "video_decoder.mpeg4" },
+    { "OMX.ffmpeg.wmv.decoder", "ffmpegvdec", "video_decoder.wmv" },
+    { "OMX.ffmpeg.rv.decoder", "ffmpegvdec", "video_decoder.rv" },
+    { "OMX.ffmpeg.h264.decoder", "ffmpegvdec", "video_decoder.avc" },
+    { "OMX.ffmpeg.vp6.decoder", "ffmpegvdec", "video_decoder.vp6" },
+    { "OMX.ffmpeg.vp8.decoder", "ffmpegvdec", "video_decoder.vp8" },
+    { "OMX.ffmpeg.vp9.decoder", "ffmpegvdec", "video_decoder.vp9" },
+    { "OMX.ffmpeg.vc1.decoder", "ffmpegvdec", "video_decoder.vc1" },
+    { "OMX.ffmpeg.flv1.decoder", "ffmpegvdec", "video_decoder.flv1" },
+    { "OMX.ffmpeg.divx.decoder", "ffmpegvdec", "video_decoder.divx" },
+    { "OMX.ffmpeg.vheuristic.decoder", "ffmpegvdec", "video_decoder.heuristic" },
+    { "OMX.ffmpeg.aac.decoder", "ffmpegadec", "audio_decoder.aac" },
+    { "OMX.ffmpeg.mp3.decoder", "ffmpegadec", "audio_decoder.mp3" },
+    { "OMX.ffmpeg.vorbis.decoder", "ffmpegadec", "audio_decoder.vorbis" },
+    { "OMX.ffmpeg.wma.decoder", "ffmpegadec", "audio_decoder.wma" },
+    { "OMX.ffmpeg.ra.decoder", "ffmpegadec", "audio_decoder.ra" },
+    { "OMX.ffmpeg.flac.decoder", "ffmpegadec", "audio_decoder.flac" },
+    { "OMX.ffmpeg.mp1.decoder", "ffmpegadec", "audio_decoder.mp1" },
+    { "OMX.ffmpeg.mp2.decoder", "ffmpegadec", "audio_decoder.mp2" },
+    { "OMX.ffmpeg.ac3.decoder", "ffmpegadec", "audio_decoder.ac3" },
+    { "OMX.ffmpeg.ape.decoder", "ffmpegadec", "audio_decoder.ape" },
+    { "OMX.ffmpeg.dts.decoder", "ffmpegadec", "audio_decoder.dts" },
+    { "OMX.ffmpeg.aheuristic.decoder", "ffmpegadec", "audio_decoder.heuristic" },
     { "OMX.google.aac.decoder", "aacdec", "audio_decoder.aac" },
     { "OMX.google.aac.encoder", "aacenc", "audio_encoder.aac" },
     { "OMX.google.amrnb.decoder", "amrdec", "audio_decoder.amrnb" },
@@ -71,6 +96,7 @@ OMX_ERRORTYPE SoftOMXPlugin::makeComponentInstance(
         OMX_COMPONENTTYPE **component) {
     ALOGV("makeComponentInstance '%s'", name);
 
+    dlerror(); // clear any existing error
     for (size_t i = 0; i < kNumComponents; ++i) {
         if (strcmp(name, kComponents[i].mName)) {
             continue;
@@ -83,10 +109,12 @@ OMX_ERRORTYPE SoftOMXPlugin::makeComponentInstance(
         void *libHandle = dlopen(libName.c_str(), RTLD_NOW);
 
         if (libHandle == NULL) {
-            ALOGE("unable to dlopen %s", libName.c_str());
+            ALOGE("unable to dlopen %s: %s", libName.c_str(), dlerror());
 
             return OMX_ErrorComponentNotFound;
         }
+
+        ALOGV("load component %s for %s", libName.c_str(), name);
 
         typedef SoftOMXComponent *(*CreateSoftOMXComponentFunc)(
                 const char *, const OMX_CALLBACKTYPE *,
@@ -98,7 +126,8 @@ OMX_ERRORTYPE SoftOMXPlugin::makeComponentInstance(
                     "_Z22createSoftOMXComponentPKcPK16OMX_CALLBACKTYPE"
                     "PvPP17OMX_COMPONENTTYPE");
 
-        if (createSoftOMXComponent == NULL) {
+        if (const char *error = dlerror()) {
+            ALOGE("unable to dlsym %s: %s", libName.c_str(), error);
             dlclose(libHandle);
             libHandle = NULL;
 

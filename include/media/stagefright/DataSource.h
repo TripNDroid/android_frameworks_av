@@ -80,6 +80,7 @@ public:
             const sp<DataSource> &source, String8 *mimeType,
             float *confidence, sp<AMessage> *meta);
 
+    static void RegisterSniffer_l(SnifferFunc func);
     static void RegisterDefaultSniffers();
 
     // for DRM
@@ -101,8 +102,6 @@ private:
     static Mutex gSnifferMutex;
     static List<SnifferFunc> gSniffers;
     static bool gSniffersRegistered;
-
-    static void RegisterSniffer_l(SnifferFunc func);
 
     DataSource(const DataSource &);
     DataSource &operator=(const DataSource &);

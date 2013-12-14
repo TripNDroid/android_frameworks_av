@@ -108,7 +108,7 @@ struct ExtendedUtils {
         static int64_t getMaxAVSyncLateMargin();
     };
 
-    //set B frames for MPEG4
+    //set B frames for MPEG4extend
     static void setBFrames(OMX_VIDEO_PARAM_MPEG4TYPE &mpeg4type, int32_t &numBFrames,
             const char* componentName);
 
@@ -133,6 +133,11 @@ struct ExtendedUtils {
     static uint32_t helper_getCodecSpecificQuirks(KeyedVector<AString, size_t> &mCodecQuirks,
                                                   Vector<AString> quirks);
 
+    static void setArbitraryModeIfInterlaced(
+            const uint8_t *ptr, const sp<MetaData> &meta);
+
+    static int32_t checkIsInterlace(sp<MetaData> &meta);
+
     static bool isAVCProfileSupported(int32_t profile);
 
     //notify stride change to ANW
@@ -141,10 +146,6 @@ struct ExtendedUtils {
 
     static bool checkIsThumbNailMode(const uint32_t flags, char* componentName);
 
-    static void setArbitraryModeIfInterlaced(
-            const uint8_t *ptr, const sp<MetaData> &meta);
-
-    static int32_t checkIsInterlace(sp<MetaData> &meta);
 };
 
 }

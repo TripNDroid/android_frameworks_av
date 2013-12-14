@@ -117,6 +117,12 @@ OMX_ERRORTYPE SimpleSoftOMXComponent::setParameter(
     return internalSetParameter(index, params);
 }
 
+OMX_ERRORTYPE SimpleSoftOMXComponent::getExtensionIndex(
+        const char *name, OMX_INDEXTYPE *index) {
+    Mutex::Autolock autoLock(mLock);
+    return internalGetExtensionIndex((OMX_STRING)name, index);
+}
+
 OMX_ERRORTYPE SimpleSoftOMXComponent::internalGetParameter(
         OMX_INDEXTYPE index, OMX_PTR params) {
     switch (index) {
@@ -180,6 +186,15 @@ OMX_ERRORTYPE SimpleSoftOMXComponent::internalSetParameter(
         default:
             return OMX_ErrorUnsupportedIndex;
     }
+}
+
+OMX_ERRORTYPE SimpleSoftOMXComponent::internalGetExtensionIndex(
+        OMX_STRING name, OMX_INDEXTYPE *index) {
+    if ((name == NULL) || (index == NULL)) {
+        return OMX_ErrorBadParameter;
+    }
+
+    return OMX_ErrorUnsupportedIndex;
 }
 
 OMX_ERRORTYPE SimpleSoftOMXComponent::useBuffer(

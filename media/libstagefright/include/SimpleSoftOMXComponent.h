@@ -66,6 +66,9 @@ protected:
     virtual OMX_ERRORTYPE internalSetParameter(
             OMX_INDEXTYPE index, const OMX_PTR params);
 
+    virtual OMX_ERRORTYPE internalGetExtensionIndex(
+            OMX_STRING name, OMX_INDEXTYPE *index);
+
     virtual void onQueueFilled(OMX_U32 portIndex);
     List<BufferInfo *> &getPortQueue(OMX_U32 portIndex);
 
@@ -103,6 +106,9 @@ private:
 
     virtual OMX_ERRORTYPE setParameter(
             OMX_INDEXTYPE index, const OMX_PTR params);
+
+    virtual OMX_ERRORTYPE getExtensionIndex(
+            const char *name, OMX_INDEXTYPE *index);
 
     virtual OMX_ERRORTYPE useBuffer(
             OMX_BUFFERHEADERTYPE **buffer,

@@ -965,6 +965,7 @@ public:
     static const char AUTO_EXPOSURE_FRAME_AVG[];
     static const char AUTO_EXPOSURE_CENTER_WEIGHTED[];
     static const char AUTO_EXPOSURE_SPOT_METERING[];
+    static const char AUTO_EXPOSURE_SMART_METERING[];
 
     static const char KEY_SHARPNESS[];
     static const char KEY_MAX_SHARPNESS[];

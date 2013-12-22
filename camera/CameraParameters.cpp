@@ -232,6 +232,10 @@ const char CameraParameters::KEY_GPU_EFFECT_PARAM_1[] = "GE-param1";
 const char CameraParameters::KEY_GPU_EFFECT_PARAM_2[] = "GE-param2";
 const char CameraParameters::KEY_GPU_EFFECT_PARAM_3[] = "GE-param3";
 const char CameraParameters::KEY_FORCE_USE_AUDIO_ENABLED[] = "forceuseaudio";
+const char CameraParameters::KEY_CAF_FOCUS_MODE[] = "caf-focus-mode";
+const char CameraParameters::KEY_CAF_FOCUS_MODE_TOUCH[] = "touch";
+const char CameraParameters::KEY_CAF_FOCUS_MODE_FACE[] = "face";
+const char CameraParameters::KEY_CAF_FOCUS_MODE_FACE_TOUCH[] = "facetouch";
 #endif
 
 #ifdef LG_CAMERA_HARDWARE

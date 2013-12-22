@@ -700,6 +700,10 @@ public:
     static const char KEY_GPU_EFFECT_PARAM_2[];
     static const char KEY_GPU_EFFECT_PARAM_3[];
     static const char KEY_FORCE_USE_AUDIO_ENABLED[];
+    static const char KEY_CAF_FOCUS_MODE[];
+    static const char KEY_CAF_FOCUS_MODE_TOUCH[];
+    static const char KEY_CAF_FOCUS_MODE_FACE[];
+    static const char KEY_CAF_FOCUS_MODE_FACE_TOUCH[];
 #endif
 
 #ifdef LG_CAMERA_HARDWARE

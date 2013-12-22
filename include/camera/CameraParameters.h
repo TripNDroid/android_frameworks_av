@@ -726,6 +726,7 @@ public:
 #endif
 
     static const char KEY_AE_BRACKET_HDR[];
+    static const char KEY_AE_BRACKET_HDR_VALUES[];
 
     // Value for KEY_ZOOM_SUPPORTED or KEY_SMOOTH_ZOOM_SUPPORTED.
     static const char TRUE[];

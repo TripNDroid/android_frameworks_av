@@ -172,6 +172,7 @@ const char CameraParameters::KEY_POWER_MODE[] = "power-mode";
 const char CameraParameters::KEY_POWER_MODE_SUPPORTED[] = "power-mode-supported";
 #endif
 const char CameraParameters::KEY_AE_BRACKET_HDR[] = "ae-bracket-hdr";
+const char CameraParameters::KEY_AE_BRACKET_HDR_VALUES[] = "ae-bracket-hdr-values";
 
 /*only effective when KEY_AE_BRACKET_HDR set to ae_bracketing*/
 //const char CameraParameters::KEY_AE_BRACKET_SETTING_KEY[] = "ae-bracket-setting";

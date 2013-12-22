@@ -406,6 +406,7 @@ const char CameraParameters::LENSSHADE_DISABLE[] = "disable";
 const char CameraParameters::AUTO_EXPOSURE_FRAME_AVG[] = "frame-average";
 const char CameraParameters::AUTO_EXPOSURE_CENTER_WEIGHTED[] = "center-weighted";
 const char CameraParameters::AUTO_EXPOSURE_SPOT_METERING[] = "spot-metering";
+const char CameraParameters::AUTO_EXPOSURE_SMART_METERING[] = "smart-metering";
 
 const char CameraParameters::KEY_GPS_LATITUDE_REF[] = "gps-latitude-ref";
 const char CameraParameters::KEY_GPS_LONGITUDE_REF[] = "gps-longitude-ref";

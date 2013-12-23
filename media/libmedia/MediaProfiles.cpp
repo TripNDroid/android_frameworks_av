@@ -80,6 +80,7 @@ const MediaProfiles::NameToTagMap MediaProfiles::sCamcorderQualityNameMap[] = {
 #ifdef QCOM_HARDWARE
     {"4kuhd", CAMCORDER_QUALITY_4kUHD},
     {"4kdci", CAMCORDER_QUALITY_4kDCI},
+    {"slowmotion", CAMCORDER_QUALITY_SLOWMOTION},
 #endif
 
     {"timelapselow",  CAMCORDER_QUALITY_TIME_LAPSE_LOW},

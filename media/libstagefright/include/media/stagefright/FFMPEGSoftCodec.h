@@ -152,6 +152,9 @@ private:
     static status_t setAC3Format(
             const sp<AMessage> &msg, sp<IOMXNode> OMXhandle);
 
+    static status_t setALACFormat(
+            const sp<AMessage> &msg, sp<IOMXNode> OMXhandle);
+
     static status_t setAPEFormat(
             const sp<AMessage> &msg, sp<IOMXNode> OMXhandle);
 

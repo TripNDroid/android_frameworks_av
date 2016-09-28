@@ -33,6 +33,8 @@
 #include <OMX_QCOMExtns.h>
 #endif
 
+#include "omx/OMXUtils.h"
+
 namespace android {
 
 enum MetaKeyType{
@@ -169,15 +171,6 @@ void FFMPEGSoftCodec::convertMessageToMetaDataFF(
             meta->setCString(MetaKeyTable[i].MetaKey, str_val.c_str());
         }
     }
-}
-
-template<class T>
-static void InitOMXParams(T *params) {
-    params->nSize = sizeof(T);
-    params->nVersion.s.nVersionMajor = 1;
-    params->nVersion.s.nVersionMinor = 0;
-    params->nVersion.s.nRevision = 0;
-    params->nVersion.s.nStep = 0;
 }
 
 const char* FFMPEGSoftCodec::overrideComponentName(

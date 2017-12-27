@@ -40,6 +40,7 @@
 #include <gui/Surface.h>
 #include <media/stagefright/ACodec.h>
 #include <media/stagefright/MediaCodec.h>
+#include <media/stagefright/FFMPEGSoftCodec.h>
 
 #include "common/ExtensionsLoader.hpp"
 #include "stagefright/AVExtensions.h"
@@ -80,8 +81,10 @@ int AVUtils::getAudioSampleBits(const sp<MetaData> &) {
     return 16;
 }
 
-int AVUtils::getAudioSampleBits(const sp<AMessage> &) {
-    return 16;
+int AVUtils::getAudioSampleBits(const sp<AMessage> &format) {
+    AudioEncoding encoding = kAudioEncodingPcm16bit;
+    format->findInt32("pcm-encoding", (int32_t*)&encoding);
+    return FFMPEGSoftCodec::audioEncodingToBits(encoding);
 }
 
 audio_format_t AVUtils::updateAudioFormat(audio_format_t audioFormat,

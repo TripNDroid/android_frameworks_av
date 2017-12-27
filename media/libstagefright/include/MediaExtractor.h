@@ -20,6 +20,7 @@
 
 #include <media/IMediaExtractor.h>
 #include <media/IMediaSource.h>
+#include <media/stagefright/DataSource.h>
 #include <media/MediaAnalyticsItem.h>
 
 namespace android {
@@ -27,7 +28,6 @@ namespace media {
 class ICas;
 };
 using namespace media;
-class DataSource;
 struct MediaSource;
 class MetaData;
 
@@ -67,6 +67,12 @@ public:
     virtual uint32_t flags() const;
 
     // for DRM
+    void setDrmFlag(bool flag) {
+        mIsDrm = flag;
+    };
+    bool getDrmFlag() {
+        return mIsDrm;
+    }
     virtual char* getDrmTrackInfo(size_t /*trackID*/, int * /*len*/) {
         return NULL;
     }
@@ -93,6 +99,7 @@ protected:
     virtual void populateMetrics();
 
 private:
+    bool mIsDrm;
 
     static Mutex gSnifferMutex;
     static List<SnifferFunc> gSniffers;

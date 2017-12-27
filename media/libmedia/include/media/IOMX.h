@@ -51,6 +51,7 @@ public:
     DECLARE_META_INTERFACE(OMX);
 
     typedef uint32_t buffer_id;
+    typedef uint32_t node_id;
 
     enum {
         kFenceTimeoutMs = 1000

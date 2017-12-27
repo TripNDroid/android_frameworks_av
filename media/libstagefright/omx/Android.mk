@@ -14,6 +14,7 @@ LOCAL_SRC_FILES:=                          \
         SoftOMXPlugin.cpp                  \
         SoftVideoDecoderOMXComponent.cpp   \
         SoftVideoEncoderOMXComponent.cpp   \
+        FFMPEGSoftCodec.cpp                \
         1.0/Omx.cpp                        \
         1.0/OmxStore.cpp                   \
         1.0/WGraphicBufferProducer.cpp     \
@@ -25,13 +26,18 @@ LOCAL_SRC_FILES:=                          \
 
 LOCAL_C_INCLUDES += \
         $(TOP)/frameworks/av/media/libstagefright \
+        $(TOP)/frameworks/av/media/libavextensions \
+        $(TOP)/frameworks/av/media/libstagefright/mpeg2ts \
         $(TOP)/frameworks/native/include/media/hardware \
         $(TOP)/frameworks/native/include/media/openmax \
+        $(TOP)/external/icu/icu4c/source/common \
+        $(TOP)/external/icu/icu4c/source/i18n \
         $(TOP)/system/libhidl/base/include \
 
 LOCAL_SHARED_LIBRARIES :=                         \
         libbase                                   \
         libbinder                                 \
+        libcrypto                                 \
         libmedia                                  \
         libutils                                  \
         liblog                                    \
@@ -43,12 +49,17 @@ LOCAL_SHARED_LIBRARIES :=                         \
         libhidlbase                               \
         libhidlmemory                             \
         libstagefright_xmlparser@1.0              \
+        libnativewindow                           \
+        libnetd_client                            \
         android.hidl.base@1.0                     \
         android.hidl.memory@1.0                   \
         android.hardware.media@1.0                \
         android.hardware.media.omx@1.0            \
         android.hardware.graphics.common@1.0      \
         android.hardware.graphics.bufferqueue@1.0 \
+
+LOCAL_STATIC_LIBRARIES :=                         \
+        libavextensions                           \
 
 LOCAL_EXPORT_C_INCLUDES := \
         $(TOP)/frameworks/av/include
@@ -65,6 +76,9 @@ ifeq ($(strip $(AUDIO_FEATURE_ENABLED_EXTN_FLAC_DECODER)),true)
 LOCAL_CFLAGS += -DQTI_FLAC_DECODER
 endif
 endif
+
+# FFMPEG plugin
+LOCAL_C_INCLUDES += $(TOP)/external/stagefright-plugins/include
 
 LOCAL_MODULE:= libstagefright_omx
 LOCAL_CFLAGS += -Werror -Wall -Wno-unused-parameter -Wno-documentation

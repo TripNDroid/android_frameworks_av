@@ -219,8 +219,9 @@ cc_library_shared {
         "libavmediaextentions",
     ],
 
-    include_dirs: ["frameworks/av/media/libavextensions"],
-
+    include_dirs: [
+        "frameworks/av/media/libavextensions",
+    ],
     export_include_dirs: [
         "include",
     ],

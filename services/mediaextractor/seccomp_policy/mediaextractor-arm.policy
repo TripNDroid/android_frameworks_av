@@ -6,6 +6,7 @@ prctl: 1
 write: 1
 getpriority: 1
 mmap2: 1
+mremap: 1
 close: 1
 munmap: 1
 dup: 1

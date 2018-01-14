@@ -44,16 +44,22 @@ bool AVMediaUtils::AudioTrackIsTrackOffloaded(audio_io_handle_t output __unused)
     return false;
 }
 
-// ----- NO TRESSPASSING BEYOND THIS LINE ------
 AVMediaUtils::AVMediaUtils() {
 }
 
 AVMediaUtils::~AVMediaUtils() {
 }
 
-//static
-AVMediaUtils *AVMediaUtils::sInst =
-        ExtensionsLoader<AVMediaUtils>::createInstance("createExtendedMediaUtils");
+AVMediaUtils* AVMediaUtils::sInst = NULL;
+
+// static
+AVMediaUtils* AVMediaUtils::get() {
+    if (sInst == NULL) {
+        sInst = ExtensionsLoader<AVMediaUtils>
+                    ::createInstance("createExtendedMediaUtils");
+    }
+    return sInst;
+}
 
 } //namespace android
 

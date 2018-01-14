@@ -8,6 +8,7 @@ getpriority: 1
 close: 1
 dup: 1
 mmap: 1
+mremap: 1
 munmap: 1
 openat: 1
 mprotect: 1

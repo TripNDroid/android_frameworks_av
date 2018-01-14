@@ -40,15 +40,22 @@ class MediaRecorder;
 /*
  * Common delegate to the classes in libstagefright
  */
-struct AVMediaUtils {
+class AVMediaUtils {
+
+public:
+    AVMediaUtils();
+    ~AVMediaUtils();
 
 
-    virtual size_t AudioTrackGetOffloadFrameCount(size_t frameCount);
+    size_t AudioTrackGetOffloadFrameCount(size_t frameCount);
 
-    virtual bool AudioTrackIsTrackOffloaded(audio_io_handle_t /*output*/);
+    bool AudioTrackIsTrackOffloaded(audio_io_handle_t /*output*/);
 
-    // ----- NO TRESSPASSING BEYOND THIS LINE ------
-    DECLARE_LOADABLE_SINGLETON(AVMediaUtils);
+    static AVMediaUtils* get();
+
+private:
+    static AVMediaUtils* sInst;
+
 };
 
 } //namespace android

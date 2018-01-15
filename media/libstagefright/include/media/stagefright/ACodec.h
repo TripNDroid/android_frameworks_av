@@ -34,6 +34,8 @@
 #include <android/hidl/allocator/1.0/IAllocator.h>
 #include <android/hidl/memory/1.0/IMemory.h>
 
+#include <system/audio.h>
+
 #define TRACK_BUFFER_TIMING     0
 
 namespace android {
@@ -237,6 +239,8 @@ protected:
     uint32_t mFlags;
     sp<IOMX> mOMX;
     sp<IOMXNode> mOMXNode;
+    sp<IBinder> mNodeBinder;
+    IOMX::node_id mNode;
     int32_t mNodeGeneration;
     bool mTrebleFlag;
     sp<TAllocator> mAllocator[4];
@@ -465,9 +469,11 @@ protected:
             int32_t maxOutputChannelCount, const drcParams_t& drc,
             int32_t pcmLimiterEnable);
 
-    status_t setupAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
+    status_t setupAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate,
+            AudioEncoding encoding = kAudioEncodingPcm16bit);
 
-    status_t setupEAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
+    status_t setupEAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate,
+            AudioEncoding encoding = kAudioEncodingPcm16bit);
 
     status_t selectAudioPortFormat(
             OMX_U32 portIndex, OMX_AUDIO_CODINGTYPE desiredFormat);

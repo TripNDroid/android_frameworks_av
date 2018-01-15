@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include <media/stagefright/omx/OMXUtils.h>
+#include <media/stagefright/FFMPEGSoftCodec.h>
 #include <media/stagefright/foundation/ADebug.h>
 #include <media/stagefright/foundation/AUtils.h>
 #include <media/stagefright/MediaErrors.h>
@@ -176,7 +177,7 @@ const char *GetComponentRole(bool isEncoder, const char *mime) {
     }
 
     if (i == kNumMimeToRole) {
-        return NULL;
+        return FFMPEGSoftCodec::getComponentRole(isEncoder, mime);
     }
 
     return isEncoder ? kMimeToRole[i].encoderRole

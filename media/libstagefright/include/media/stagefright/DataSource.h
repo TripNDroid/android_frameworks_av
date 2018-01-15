@@ -19,6 +19,7 @@
 #define DATA_SOURCE_H_
 
 #include <sys/types.h>
+#include <media/stagefright/foundation/AMessage.h>
 #include <media/stagefright/foundation/ADebug.h>
 #include <media/stagefright/MediaErrors.h>
 #include <utils/Errors.h>
@@ -30,7 +31,6 @@
 
 namespace android {
 
-struct AMessage;
 struct AString;
 class  IDataSource;
 struct IMediaHTTPService;
@@ -58,7 +58,7 @@ public:
     static sp<DataSource> CreateFromIDataSource(const sp<IDataSource> &source);
     static sp<DataSource> CreateFromFd(int fd, int64_t offset, int64_t length);
 
-    DataSource() {}
+    DataSource() : mMeta(new AMessage) {}
 
     virtual status_t initCheck() const = 0;
 
@@ -123,6 +123,8 @@ public:
 
     virtual void close() {};
 
+    virtual sp<AMessage> meta() { return mMeta; }
+
     // creates an IDataSource wrapper to the DataSource.
     virtual sp<IDataSource> asIDataSource();
 
@@ -133,6 +135,8 @@ protected:
     virtual ~DataSource() {}
 
 private:
+    sp<AMessage> mMeta;
+
     DataSource(const DataSource &);
     DataSource &operator=(const DataSource &);
 };

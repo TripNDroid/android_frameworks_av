@@ -24,6 +24,7 @@ LOCAL_C_INCLUDES := \
 	frameworks/av/media/libstagefright/rtsp                \
 	frameworks/av/media/libstagefright/timedtext           \
 	frameworks/av/media/libmediaplayerservice              \
+	frameworks/av/include/media                            \
 	frameworks/native/include/media/openmax                \
     $(TOP)/frameworks/av/media/libavextensions
 
@@ -41,6 +42,7 @@ LOCAL_SHARED_LIBRARIES :=       \
     libmedia                    \
     libmediadrm                 \
     libcrypto                   \
+    libnativewindow             \
 
 LOCAL_MODULE:= libstagefright_nuplayer
 

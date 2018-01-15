@@ -9,6 +9,7 @@ cc_library_shared {
         "FrameDropper.cpp",
         "GraphicBufferSource.cpp",
         "BWGraphicBufferSource.cpp",
+        "FFMPEGSoftCodec.cpp",
         "OMX.cpp",
         "OMXStore.cpp",
         "OMXMaster.cpp",
@@ -44,6 +45,7 @@ cc_library_shared {
     shared_libs: [
         "libbase",
         "libbinder",
+        "libcrypto",
         "libmedia_omx",
         "libutils",
         "liblog",
@@ -57,6 +59,8 @@ cc_library_shared {
         "libhidlmemory",
         "libhidltransport",
         "libnativewindow", // TODO(b/62923479): use header library
+        "libnetd_client",
+        "android.hidl.allocator@1.0",
         "android.hidl.memory@1.0",
         "android.hidl.token@1.0-utils",
         "android.hardware.media@1.0",
@@ -72,12 +76,35 @@ cc_library_shared {
         "libstagefright_xmlparser",
     ],
 
+    static_libs: [
+        "libavextensions",
+    ],
+
+    include_dirs: [
+        "external/icu/icu4c/source/common",
+        "external/icu/icu4c/source/i18n",
+        "external/stagefright-plugins/include",
+        "frameworks/av/media/libavextensions",
+        "frameworks/av/media/libstagefright/mpeg2ts",
+        "frameworks/av/media/libstagefright/omx/include/media/stagefright",
+        "frameworks/native/include/media/openmax",
+        "hardware/qcom/media-caf/msm8998/mm-core/inc",
+    ],
+
     cflags: [
         "-Werror",
         "-Wall",
         "-Wno-unused-parameter",
         "-Wno-documentation",
     ],
+
+    product_variables: {
+        tripndroid: {
+            uses_qcom_hardware: {
+                cflags: ["-DQCOM_HARDWARE"],
+            },
+        },
+    },
 
     sanitize: {
         misc_undefined: [
@@ -97,7 +124,10 @@ cc_library_shared {
     vndk: {
         enabled: true,
     },
-    srcs: ["OMXUtils.cpp"],
+    srcs: [
+        "FFMPEGSoftCodec.cpp",
+        "OMXUtils.cpp",
+    ],
     export_include_dirs: [
         "include",
     ],
@@ -107,12 +137,29 @@ cc_library_shared {
     export_header_lib_headers: [
         "media_plugin_headers",
     ],
+    static_libs: [
+        "libavextensions",
+    ],
     shared_libs: [
+        "libcrypto",
         "libmedia_omx",
         "liblog",
+        "libcutils",
+        "libutils",
+        "libstagefright_foundation",
+        "libnativewindow",
+        "android.hidl.allocator@1.0",
     ],
     export_shared_lib_headers: [
         "libmedia_omx",
+    ],
+    include_dirs: [
+        "external/stagefright-plugins/include",
+        "frameworks/av/media/libavextensions",
+        "frameworks/av/media/libstagefright/mpeg2ts",
+        "frameworks/av/media/libstagefright/omx/include/media/stagefright",
+        "frameworks/native/include/media/openmax",
+        "hardware/qcom/media-caf/msm8998/mm-core/inc",
     ],
     sanitize: {
         misc_undefined: [
